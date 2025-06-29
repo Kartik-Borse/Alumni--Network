@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard - Scholar Mentor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="./dashboard-user.css">
+  <link rel="stylesheet" href="./nav-bar-dash.css">
+  <script src="./dashboard-user.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo" id="logo">
+      <h1 onclick="homePage()">Scholar Mentor</h1>
+    </div>
+    <div class="navigation-bar">
+      <div class="search-container">
+        <span class="material-symbols-outlined">
+          search
+        </span>
+        <input type="text" id="search-input" placeholder="Search">
+      </div>
+      <button class="home" id="home" onclick="homePage()">DASHBOARD</button>
+      <button class="explore" id="explore">CHATROOM</button>
+      <button class="my-profile" id="my-profile">MY PROFILE</button>
+      <button class="logOut" id="log-out" onclick="logOut()">LOG OUT</button>
+      
+    </div>
+  </header>
+
+  <div class="alumni-container" id="alumniSection">
+    <div class="cards" id="cardsContainer"></div>
+  </div>
+  
+
+  <script>
+    const supabase = window.supabase.createClient(
+      "https://naecognnktiibvkwfhks.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hZWNvZ25ua3RpaWJ2a3dmaGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2OTY0NzYsImV4cCI6MjA2MDI3MjQ3Nn0.r1IGt9Hx4-dr4lWpP0b9XX-pwoVRjzlMyys_IVZ8opY");
+
+  async function fetchProfiles() {
+
+  const { data: profiles, error: profileError } = await supabase.from("user_profiles").select("*");
+  if (profileError) {
+    console.error("Error fetching user_profiles:", profileError);
+    return;
+  }
+
+
+  const container = document.getElementById("cardsContainer");
+  container.innerHTML = "";
+
+  profiles.forEach(profile => {
+  // const detail = details.find(d => String(d.user_id) === String(profile.id)) || {};
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <img src="${profile.avatar_url || './defaultPhoto.png'}" alt="${profile.username}" class="profile-img">
+    <h3>${profile.username || 'N/A'}</h3>
+    <p class="position">Designation: ${profile.designation || 'Not updated'}</p>
+    <p class="skills">Skills: ${profile.skills || 'Not updated'}</p>
+    <p class="grad-year">Graduation Year: ${profile.passing_year || ''}</p>
+    <p class="status">Status: ${profile.status || ''}</p>
+    <div class="social-icons">
+      <a href="${profile.linkedin || '#'}" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="mailto:${profile.email}" target="_blank"><i class="fas fa-envelope"></i></a>
+    </div>
+    <button class="connect-btn">Connect</button>
+  `;
+  container.appendChild(card);
+});
+
+}
+
+
+    function homePage() {
+      window.open(window.location.href, '_self');
+    }
+
+    fetchProfiles();
+  </script>
+</body>
+</html>
