@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholar Mentor</title>
+    <link rel="stylesheet" href="./Assests/Login-Assets/style.css">
+    <link rel="stylesheet" href="./Assests/Index-Assets/style.css">
+    
+    <!-- Database for Login -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script>
+      const supabase = window.supabase.createClient("https://naecognnktiibvkwfhks.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hZWNvZ25ua3RpaWJ2a3dmaGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2OTY0NzYsImV4cCI6MjA2MDI3MjQ3Nn0.r1IGt9Hx4-dr4lWpP0b9XX-pwoVRjzlMyys_IVZ8opY");
+    </script>
+    
+    
+    
+</head>
+
+<body>
+    <header>
+        <div class="logo" id="logo">
+            <h1 onclick="homePage()">Scholar Mentor</h1>
+            
+            
+        </div>
+        <div class = "navigation-bar">
+            <button class="home" id="home">HOME</button>
+            <button class="about" id="about" >ABOUT</button>
+            <!-- <button class="alumni" onclick="showSection('alumni')">CONTACT</button> -->
+            <button class="login signUp" id="login" onclick="showPopup()">LOGIN</button>
+            <!-- <button class="login signUp" onclick="showSection('login')">SIGN UP</button> -->
+            </div>
+    </header>
+    <main>
+        <div class="content">
+        <div id="home">
+            
+            <h1 class="introLine1">An Alumni Network</h1>
+            <h1 ><span class="introLine2"></span></h1>
+            <p class="introPara">At Scholar Mentor, we believe that graduation is not the end of your journey with us—it’s just the beginning of a lifelong connection. Our platform is designed to bring together alumni from across generations, fostering a vibrant community of professionals, mentors, and lifelong learners.</p><br>
+            <div class="get-started" id="getStarted" onclick="showPopup()" >Get Started</div>
+        </div> 
+
+        <div class="main-image">
+            <!-- Image from google -->
+            <img src="./Assests/Img/alumni.jpg" alt="Alumni-image">
+        </div>
+        
+    </div>
+    
+    <!-- Popup Login Form -->
+    <div class="overlay" id="overlay" onclick="hidePopup()"></div>
+    <div class="popup" id="popup">
+    <div class="container" id="container">
+        <div class="form-container active" id="login-container">
+            
+            <form id="login-form-user" class="form">
+                <h2 style="color: #333; font-weight: 550;">User Login</h2>
+                <input type="text" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <br>
+                <button id="btn" type="submit">Login</button>
+                <p id="login-message" style="color: green;"></p>
+                <p >Login as <a href="#" data-target="login-admin-container">Admin</a></p>
+                <p><a href="#" data-target="forgot-password-container">Forgot Password?</a></p>
+                <p>Don't have an account? <a href="#" data-target="signup-container">Sign Up</a></p>
+                <style>form>p,a{background-color: transparent;}</style>
+            </form>
+        </div>
+        
+        <div class="form-container" id="login-admin-container">
+            
+            <form id="login-form-admin" class="form">
+                <h2 style="color: #333; font-weight: 550;">Admin Login</h2>
+                <input type="text" id="admin-username" placeholder="Username" required>
+                <input type="password" id="admin-password" placeholder="Password" required>
+                <br>
+                <button id="btn" type="submit">Login</button>
+                <p id="admin-message" style="color: green;"></p>
+                <p>Login as <a href="#" data-target="login-container">User</a></p>
+                <p><a href="#" data-target="forgot-password-container">Forgot Password?</a></p>
+            </form>
+        </div>
+
+        <div class="form-container" id="signup-container">
+            <form id="signup-form" class="form">
+                <h2 style="color: #333; font-weight: 550;">Sign Up</h2>
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <input type="text" placeholder="PRN No" required>
+                <select class="selection" id="gender" required >                    
+                    <option value="Select Gender" disabled selected hidden>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                
+                <!-- <label for="dob">Date Of Birth</label> -->
+                <input id="dob" type="text" placeholder="Date of Birth" 
+                onfocus="(this.type='date')" 
+                onblur="if(!this.value) this.type='text'">
+
+
+                <div class="AluStu_tag">
+                <select class="selection" id="AluStu_tag" required >                    
+                    <option value="Student/Alumni" disabled selected hidden>Student/Alumni</option>
+                    <option value="Alumni">Alumni</option>
+                    <option value="Student">Student</option>
+                    
+                </select>
+                <style>
+                    .AluStu_tag>label{
+                        background-color: transparent;
+                        text-decoration-color: #555;
+                        color: #555;
+                    }
+                </style>
+                </div>
+                <div id="passout-fields" style="background-color: transparent;">
+                    <input type="number" placeholder="Year of Passing" >
+                    <select class="selection" id="department" required >                        
+                        <option value="Department" disabled selected hidden>Select Department</option>
+                        <option value="Computer Engineering">Computer Engineering</option>
+                        <option value="IT Engineering">IT Engineering</option>
+                        <option value="AI&DS Engineering">AI&DS Engineering</option>
+                        <option value="E&TC Engineering">E&TC Engineering</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        
+                    </select>
+                
+                </div>
+                
+                <button id="btn" type="submit">Sign Up</button>
+                <p id="signUp-message" style="color: green;"></p>
+                <p>Already have an account? <a href="#" data-target="login-container">Login</a></p>
+            </form>
+        </div>
+
+        <div class="form-container" id="forgot-password-container">
+            <form id="forgot-password-form" class="form">
+                <h2 style="color: #333; font-weight: 550;">Forgot Password</h2>
+                <input type="email" id="forgotemail" placeholder="Enter your email" required>
+                <input type="text" id="otp" placeholder="Enter OTP" required>
+                <input type="password" id="passWord" placeholder="New Password" required>
+                <button id="btnForget" type="submit">Send OTP</button>
+                <p id="forget-message" style="color: green;"></p>
+                <p>Remembered your password? <a href="#" data-target="login-container">Login</a></p>
+            </form>
+        </div>
+    </div>
+    </div>
+    </main>
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script src="./Assests/Index-Assets/script.js"></script>
+<script src="./Assests/Login-Assets/script.js"></script>
+<!-- <script src="Assests/db_script.js"></script> -->
+
+</body>
+</html>
